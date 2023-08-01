@@ -52,7 +52,7 @@ final class ProfileView: UIView {
 	private lazy var nameProfileLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 2
+		label.numberOfLines = AppConstants.Text.numberOFLinesTwo
 		label.font = UIFont.SFProBold
 		label.textAlignment = .center
 		return label
@@ -61,7 +61,7 @@ final class ProfileView: UIView {
 	private lazy var experienceProfileLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 0
+		label.numberOfLines = AppConstants.Text.numberOFLinesZero
 		label.font = UIFont.SFProRegular
 		label.textColor = .gray
 		label.textAlignment = .center
@@ -71,7 +71,7 @@ final class ProfileView: UIView {
 	private lazy var cityProfileLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 0
+		label.numberOfLines = AppConstants.Text.numberOFLinesZero
 		label.font = UIFont.SFProRegular
 		label.textColor = .gray
 		label.textAlignment = .center
@@ -81,23 +81,23 @@ final class ProfileView: UIView {
 	private let locationImage: UIImageView = {
 		let imageView = UIImageView()
 		imageView.translatesAutoresizingMaskIntoConstraints = false
-		imageView.image = UIImage(named: "location_marker")
+		imageView.image = AppConstants.Image.locationImage
 		return imageView
 	}()
 	
 	private lazy var titleSkillsLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 0
+		label.numberOfLines = AppConstants.Text.numberOFLinesZero
 		label.font = UIFont.SFProMedium
-		label.text = "Мои навыки"
+		label.text = AppConstants.Text.titleSkillsLabel
 		return label
 	}()
 	
 	private lazy var toggleEditButton: UIButton = {
 		let button = UIButton(type: .system)
 		button.translatesAutoresizingMaskIntoConstraints = false
-		let normalImage = UIImage(named: "editMode_off")
+		let normalImage = AppConstants.Image.toggleEditButtonOff
 		button.setImage(normalImage, for: .normal)
 		button.tintColor = .black
 		button.addTarget(self, action: #selector(toggleEditButtonTapped), for: .touchUpInside)
@@ -122,14 +122,14 @@ final class ProfileView: UIView {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
 		label.font = UIFont.SFProMedium
-		label.text = "О себе"
+		label.text = AppConstants.Text.titleAboutMeLabel
 		return label
 	}()
 	
 	private lazy var aboutMeLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 0
+		label.numberOfLines = AppConstants.Text.numberOFLinesZero
 		label.font = UIFont.SFProRegular
 		return label
 	}()
@@ -144,10 +144,10 @@ final class ProfileView: UIView {
 	}
 	
 	@objc  func toggleEditButtonTapped() {
-		if toggleEditButton.currentImage == UIImage(named: "editMode_off") {
-			toggleEditButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+		if toggleEditButton.currentImage == AppConstants.Image.toggleEditButtonOff {
+			toggleEditButton.setImage(AppConstants.Image.toggleEditButtonOn, for: .normal)
 		} else {
-			toggleEditButton.setImage(UIImage(named: "editMode_off"), for: .normal)
+			toggleEditButton.setImage(AppConstants.Image.toggleEditButtonOff, for: .normal)
 		}
 		onButtonToggleEditButtonTapped?()
 	}
@@ -188,19 +188,18 @@ extension ProfileView: IProfileView {
 		
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
-			//			self.updateCollectionViewHeight()
 			self.skillsCollectionView.collectionViewLayout.invalidateLayout()
 			self.skillsCollectionView.reloadData()
 			
 		}
 	}
+	
 	func updateCollectionViewHeight() {
-		let itemHeight: CGFloat = 44 // Здесь укажите высоту одного элемента в коллекции
+		let itemHeight: CGFloat = 44
 		let collectionViewHeight = CGFloat(skills.count) * itemHeight / 1.5
 		skillsCollectionViewHeightConstraint.constant = collectionViewHeight
-		layoutIfNeeded() // Применение изменений высоты коллекции
+		layoutIfNeeded()
 	}
-	
 }
 
 private extension ProfileView {
@@ -266,7 +265,6 @@ private extension ProfileView {
 			skillsCollectionView.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 16),
 			skillsCollectionView.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -16),
 			skillsCollectionView.bottomAnchor.constraint(equalTo: titleAboutMeLabel.topAnchor, constant: -24),
-			//			skillsCollectionView.heightAnchor.constraint(equalToConstant: 100),
 			
 			titleAboutMeLabel.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 16),
 			

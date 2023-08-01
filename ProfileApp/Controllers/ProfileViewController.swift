@@ -47,17 +47,17 @@ final class ProfileViewController: UIViewController {
 	}
 	
 	@objc private func addSkill() {
-		let alertController = UIAlertController(title: "Добавление навыка", message: "Введите название навыка которым вы владеете", preferredStyle: .alert)
+		let alertController = UIAlertController(title: AppConstants.Text.titleAlertController, message: AppConstants.Text.message, preferredStyle: .alert)
 		alertController.addTextField { textField in
-			textField.placeholder = "Введите название"
+			textField.placeholder = AppConstants.Text.placeholderAlert
 		}
-		let addAction = UIAlertAction(title: "Добавить", style: .default) { [weak self] _ in
+		let addAction = UIAlertAction(title: AppConstants.Text.titleAddAction, style: .default) { [weak self] _ in
 			if let skill = alertController.textFields?.first?.text {
 				self?.customView.skills.append(skill)
 				self?.customView.updateTable()
 			}
 		}
-		let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+		let cancelAction = UIAlertAction(title: AppConstants.Text.titleCancelAction, style: .cancel, handler: nil)
 		alertController.addAction(addAction)
 		alertController.addAction(cancelAction)
 		present(alertController, animated: true, completion: nil)

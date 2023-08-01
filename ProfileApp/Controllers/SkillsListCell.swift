@@ -12,7 +12,7 @@ final class SkillsListCell: UICollectionViewCell {
 	var isDeleteButtonVisible: Bool = false {
 		didSet {
 			if isAddCell {
-				deleteButton.isHidden = true // Скрываем кнопку удаления для ячейки с плюсом
+				deleteButton.isHidden = true
 			} else {
 				deleteButton.isHidden = !isDeleteButtonVisible
 				contentView.invalidateIntrinsicContentSize()
@@ -35,7 +35,7 @@ final class SkillsListCell: UICollectionViewCell {
 	lazy var skillNameLabel: UILabel = {
 		let label = UILabel()
 		label.translatesAutoresizingMaskIntoConstraints = false
-		label.numberOfLines = 1
+		label.numberOfLines = AppConstants.Text.numberOFLinesOne
 		label.lineBreakMode = .byTruncatingTail
 		label.font = UIFont.SFProRegular
 		label.textAlignment = .center
@@ -45,7 +45,7 @@ final class SkillsListCell: UICollectionViewCell {
 	lazy var deleteButton: UIButton = {
 		let button = UIButton(type: .system)
 		button.translatesAutoresizingMaskIntoConstraints = false
-		let normalImage = UIImage(named: "deleteButton")
+		let normalImage = AppConstants.Image.deleteButton
 		button.setImage(normalImage, for: .normal)
 		button.tintColor = .black
 		button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
@@ -86,7 +86,6 @@ final class SkillsListCell: UICollectionViewCell {
 		layoutAttributes.frame = frame
 		return layoutAttributes
 	}
-	
 }
 
 private extension SkillsListCell {
