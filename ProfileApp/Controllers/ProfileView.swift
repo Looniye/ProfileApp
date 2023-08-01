@@ -18,7 +18,7 @@ final class ProfileView: UIView {
 	var isEditMode = false
 	var onButtonToggleEditButtonTapped: (() -> Void)?
 	var onButtonAddSkillButtonTapped: (() -> Void)?
-	
+	var skillsCollectionViewHeightConstraint: NSLayoutConstraint!
 	
 	private let scrollView: UIScrollView = {
 		let scrollView = UIScrollView()
@@ -99,6 +99,7 @@ final class ProfileView: UIView {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		let normalImage = UIImage(named: "editMode_off")
 		button.setImage(normalImage, for: .normal)
+		button.tintColor = .black
 		button.addTarget(self, action: #selector(toggleEditButtonTapped), for: .touchUpInside)
 		return button
 	}()
@@ -143,12 +144,17 @@ final class ProfileView: UIView {
 	}
 	
 	@objc  func toggleEditButtonTapped() {
+		if toggleEditButton.currentImage == UIImage(named: "editMode_off") {
+			toggleEditButton.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+		} else {
+			toggleEditButton.setImage(UIImage(named: "editMode_off"), for: .normal)
+		}
 		onButtonToggleEditButtonTapped?()
-		
 	}
 	
 	@objc  func addSkillButtonTapped() {
 		onButtonAddSkillButtonTapped?()
+		updateTable()
 	}
 	
 	@objc  func deleteSkill(sender: UIButton) {
@@ -167,6 +173,7 @@ extension ProfileView: IProfileView {
 	
 	func updateTable(){
 		skillsCollectionView.reloadData()
+		updateCollectionViewHeight()
 	}
 	
 	func updateUI(with data: UserProfile) {
@@ -181,10 +188,19 @@ extension ProfileView: IProfileView {
 		
 		DispatchQueue.main.async { [weak self] in
 			guard let self else { return }
+			//			self.updateCollectionViewHeight()
 			self.skillsCollectionView.collectionViewLayout.invalidateLayout()
 			self.skillsCollectionView.reloadData()
+			
 		}
 	}
+	func updateCollectionViewHeight() {
+		let itemHeight: CGFloat = 44 // Здесь укажите высоту одного элемента в коллекции
+		let collectionViewHeight = CGFloat(skills.count) * itemHeight / 1.5
+		skillsCollectionViewHeightConstraint.constant = collectionViewHeight
+		layoutIfNeeded() // Применение изменений высоты коллекции
+	}
+	
 }
 
 private extension ProfileView {
@@ -250,7 +266,7 @@ private extension ProfileView {
 			skillsCollectionView.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 16),
 			skillsCollectionView.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -16),
 			skillsCollectionView.bottomAnchor.constraint(equalTo: titleAboutMeLabel.topAnchor, constant: -24),
-			skillsCollectionView.heightAnchor.constraint(equalToConstant: 100),
+			//			skillsCollectionView.heightAnchor.constraint(equalToConstant: 100),
 			
 			titleAboutMeLabel.leadingAnchor.constraint(equalTo: bottomContainer.leadingAnchor, constant: 16),
 			
@@ -259,5 +275,8 @@ private extension ProfileView {
 			aboutMeLabel.trailingAnchor.constraint(equalTo: bottomContainer.trailingAnchor, constant: -16),
 			aboutMeLabel.bottomAnchor.constraint(equalTo: bottomContainer.bottomAnchor, constant: -24),
 		])
+		
+		skillsCollectionViewHeightConstraint = skillsCollectionView.heightAnchor.constraint(equalToConstant: 100)
+		skillsCollectionViewHeightConstraint.isActive = true
 	}
 }

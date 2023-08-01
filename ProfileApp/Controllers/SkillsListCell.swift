@@ -47,6 +47,7 @@ final class SkillsListCell: UICollectionViewCell {
 		button.translatesAutoresizingMaskIntoConstraints = false
 		let normalImage = UIImage(named: "deleteButton")
 		button.setImage(normalImage, for: .normal)
+		button.tintColor = .black
 		button.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
 		return button
 	}()
@@ -85,6 +86,7 @@ final class SkillsListCell: UICollectionViewCell {
 		layoutAttributes.frame = frame
 		return layoutAttributes
 	}
+	
 }
 
 private extension SkillsListCell {
